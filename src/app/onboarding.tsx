@@ -7,6 +7,7 @@ import { scaled } from '@/lib/tokens';
 import { ResponsiveShell } from '@/components/ResponsiveShell';
 import { StyroMark } from '@/components/StyroMark';
 import { SegmentedControl } from '@/components/SettingRow';
+import { SetHomeAppCard } from '@/components/SetHomeAppCard';
 
 const STEPS = ['Theme', 'Spacing', 'Home layout', 'Motion', 'Preview'] as const;
 
@@ -70,10 +71,13 @@ export default function Onboarding() {
         </View>
 
         {step === STEPS.length - 1 && (
-          <Text style={[styles.hint, { color: theme.textMuted, fontSize: scaled(12.5, theme) }]}>
-            Styro keeps the essentials close and the rest easy to find. Every choice here can be changed later in
-            Customize.
-          </Text>
+          <View style={{ marginTop: 4 }}>
+            <SetHomeAppCard />
+            <Text style={[styles.hint, { color: theme.textMuted, fontSize: scaled(12.5, theme) }]}>
+              Styro keeps the essentials close and the rest easy to find. Every choice here can be changed later in
+              Customize.
+            </Text>
+          </View>
         )}
       </ScrollView>
     </ResponsiveShell>

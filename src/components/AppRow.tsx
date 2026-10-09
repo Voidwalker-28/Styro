@@ -53,6 +53,7 @@ export function AppRow({
         style={app.iconStyle ?? state.settings.iconStyle}
         size={compact ? 40 : theme.iconSize}
         theme={theme}
+        iconBase64={app.iconBase64}
       />
       <View style={styles.texts}>
         {state.settings.showLabels !== false && (
@@ -122,6 +123,7 @@ export function AppGridCell({
         style={app.iconStyle ?? state.settings.iconStyle}
         size={theme.iconSize}
         theme={theme}
+        iconBase64={app.iconBase64}
       />
       {state.settings.showLabels && (
         <Text

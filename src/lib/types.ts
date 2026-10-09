@@ -74,6 +74,10 @@ export interface AppItem {
   lastOpenedAt: number;
   order: number;
   demoBadge?: number;
+  /** Real Android package name. Absent for demo apps in preview. */
+  packageName?: string;
+  /** Real app icon as base64 PNG (no data: prefix). Absent for demo apps. */
+  iconBase64?: string | null;
 }
 
 export interface Folder {

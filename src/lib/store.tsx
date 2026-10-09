@@ -75,6 +75,7 @@ interface StyroContextValue {
   setAppIcon: (appId: string, style: AppItem['iconStyle'], tint?: string) => void;
   moveAppCategory: (appId: string, categoryId: string) => void;
   touchApp: (appId: string) => void;
+  syncInstalledApps: () => Promise<{ count: number } | null>;
 
   addFolder: (name: string, appIds?: string[]) => Folder;
   renameFolder: (folderId: string, name: string) => void;
@@ -375,6 +376,61 @@ export function StyroProvider({ children }: { children: React.ReactNode }) {
         apps: s.apps.map((a) => (a.id === appId ? { ...a, lastOpenedAt: Date.now() } : a)),
       })),
     [patch],
+  );
+
+  /**
+   * Replace the demo catalog with the real installed apps on Android.
+   * User customizations (favorites, folders, categories, hidden, renames)
+   * are preserved by matching on packageName.
+   */
+  const syncInstalledApps = useCallback(
+    async (): Promise<{ count: number } | null> => {
+      const { getInstalledApps, isLauncherNative } = await import('./launcher');
+      if (!isLauncherNative()) return null;
+      const installed = await getInstalledApps();
+      let count = 0;
+      patch((s) => {
+        const prev = new Map(s.apps.map((a) => [a.packageName ?? a.id, a]));
+        const seen = new Set<string>();
+        const apps: AppItem[] = installed.map((inst, i) => {
+          const id = `pkg:${inst.packageName}`;
+          seen.add(inst.packageName);
+          const old = prev.get(inst.packageName);
+          count += 1;
+          return {
+            id,
+            name: inst.label,
+            customName: old?.customName,
+            category: old?.category ?? 'other',
+            aliases: old?.aliases ?? [],
+            isFavorite: old?.isFavorite ?? false,
+            isHidden: old?.isHidden ?? false,
+            folderId: old?.folderId,
+            lastOpenedAt: old?.lastOpenedAt ?? 0,
+            order: i,
+            packageName: inst.packageName,
+            iconBase64: inst.iconBase64 ?? null,
+          } as AppItem;
+        });
+        // Keep any user-created demo entries that don't collide (unlikely on device).
+        const validIds = new Set(apps.map((a) => a.id));
+        return {
+          ...s,
+          apps,
+          pages: s.pages.map((p) => ({
+            ...p,
+            pinnedIds: p.pinnedIds.filter((pid) => validIds.has(pid)),
+          })),
+          folders: s.folders.map((f) => ({
+            ...f,
+            appIds: f.appIds.filter((aid) => validIds.has(aid)),
+          })),
+        };
+      });
+      announce(`App list updated. ${count} apps found.`);
+      return { count };
+    },
+    [patch, announce],
   );
 
   /* ---------- folders ---------- */
@@ -843,6 +899,7 @@ export function StyroProvider({ children }: { children: React.ReactNode }) {
     setAppIcon,
     moveAppCategory,
     touchApp,
+    syncInstalledApps,
     addFolder,
     renameFolder,
     deleteFolder,

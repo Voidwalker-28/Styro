@@ -6,6 +6,7 @@ import { scaled } from '@/lib/tokens';
 import { ResponsiveShell } from '@/components/ResponsiveShell';
 import { SectionHeader } from '@/components/SettingRow';
 import { PermissionNotice } from '@/components/bits';
+import { SetHomeAppCard } from '@/components/SetHomeAppCard';
 
 type Status = 'available' | 'preview' | 'native' | 'permission';
 
@@ -25,12 +26,15 @@ const GROUPS: { title: string; items: { name: string; desc: string; status: Stat
       { name: 'Reduced motion & large text', desc: 'Respected across every surface.', status: 'available' },
       { name: 'Keyboard navigation', desc: 'Web preview: / focuses search, arrows move, Escape backs out.', status: 'available' },
       { name: 'Haptic feedback', desc: 'Uses the native haptics API where the platform supports it.', status: 'available' },
+      { name: 'Set as default launcher', desc: 'Android build: Styro can be set as the home app via the system role request.', status: 'available' },
+      { name: 'Read installed apps', desc: 'Android build: real app list via PackageManager. Web preview still uses demo data.', status: 'available' },
+      { name: 'Launch installed packages', desc: 'Android build: taps open the real app. Web preview stays simulated.', status: 'available' },
     ],
   },
   {
     title: 'Simulated in preview',
     items: [
-      { name: 'App launching', desc: 'Tapping an app shows what would happen. Nothing is actually launched.', status: 'preview' },
+      { name: 'App launching (web)', desc: 'On web, tapping an app shows what would happen. Nothing is actually launched.', status: 'preview' },
       { name: 'Notification badges', desc: 'Demo counts on fictional apps. Never read from real notifications.', status: 'preview' },
       { name: 'Widget data', desc: 'Weather, battery, calendar, and media cards show static demo content.', status: 'preview' },
       { name: 'App hiding', desc: 'Hides from App Space in preview. Does not uninstall, secure, or lock anything.', status: 'preview' },
@@ -40,9 +44,6 @@ const GROUPS: { title: string; items: { name: string; desc: string; status: Stat
   {
     title: 'Needs a native Android build',
     items: [
-      { name: 'Set as default launcher', desc: 'Home-button behavior requires the native launcher role.', status: 'native' },
-      { name: 'Read installed apps', desc: 'Package visibility needs native Android APIs and user consent.', status: 'permission' },
-      { name: 'Launch installed packages', desc: 'Opening real apps requires native package launching.', status: 'native' },
       { name: 'Notification access', desc: 'Can expose sensitive content. Off by default; requested only for a visible feature.', status: 'permission' },
       { name: 'Real notification badges', desc: 'Badge counts need permission-backed integration.', status: 'permission' },
       { name: 'Wallpaper & live wallpaper', desc: 'Reading wallpaper and extracting colors needs native access.', status: 'permission' },
@@ -68,6 +69,7 @@ export default function NativeCapabilities() {
           <Text style={[styles.title, { color: theme.text, fontSize: scaled(22, theme) }]}>Native capabilities</Text>
         </View>
         <PermissionNotice text="Styro never shows a fake “permission granted” state. If this preview can't do it, it says so." />
+        <SetHomeAppCard />
         {GROUPS.map((g) => (
           <View key={g.title}>
             <SectionHeader title={g.title} />

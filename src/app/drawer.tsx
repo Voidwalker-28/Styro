@@ -76,9 +76,34 @@ export default function Drawer() {
   const simulateLaunch = useCallback((app: AppItem) => {
     touchApp(app.id);
     buzz('light');
+    if (app.packageName) {
+      // Real app on Android — open it. Errors stay visible, never silent.
+      import('@/lib/launcher').then(({ launchApp }) =>
+        launchApp(app.packageName!)
+          .then(() => announce(`${displayName(app)} opened.`))
+          .catch(() =>
+            setLaunchMsg(`${displayName(app)} couldn't be opened. It may have been uninstalled.`),
+          ),
+      );
+      return;
+    }
     setLaunchMsg(`${displayName(app)} would open here. Preview only — Android system access is required for the real action.`);
     announce(`${displayName(app)} selected. Preview launch simulated.`);
   }, [touchApp, buzz, announce]);
+
+  // On Android, replace the demo catalog with the real installed apps once.
+  useEffect(() => {
+    let cancelled = false;
+    import('@/lib/launcher').then(({ isLauncherNative }) => {
+      if (!cancelled && isLauncherNative()) {
+        styro.syncInstalledApps().catch(() => setLoadError(true));
+      }
+    });
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const searching = query.trim().length > 0 || searchFocused;
   const results = useMemo(

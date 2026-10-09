@@ -1,0 +1,1 @@
+{"description":"Local Expo module: real Android launcher capabilities for Styro","main":"src/index.ts","name":"styro-launcher","peerDependencies":{"expo-modules-core":"*"},"scripts":{},"types":"src/index.ts","version":"1.0.0"}

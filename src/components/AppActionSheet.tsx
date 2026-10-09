@@ -80,7 +80,7 @@ export function AppActionSheet({
     <Sheet visible={!!app} onClose={onClose} label={`Actions for ${name}`}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.head}>
-          <AppIcon name={name} tint={app.iconTint} style={app.iconStyle ?? state.settings.iconStyle} size={52} theme={theme} />
+          <AppIcon name={name} tint={app.iconTint} style={app.iconStyle ?? state.settings.iconStyle} size={52} theme={theme} iconBase64={app.iconBase64} />
           <View style={{ flex: 1 }}>
             <Text style={[styles.name, { color: theme.text, fontSize: scaled(18, theme) }]}>{name}</Text>
             <Text style={[styles.sub, { color: theme.textSecondary, fontSize: scaled(13, theme) }]}>

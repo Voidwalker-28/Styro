@@ -123,6 +123,7 @@ export function FolderOverlay({ folder, onClose }: { folder: Folder | null; onCl
                       style={app.iconStyle ?? state.settings.iconStyle}
                       size={52}
                       theme={theme}
+                      iconBase64={app.iconBase64}
                     />
                     <Text
                       style={[styles.cellLabel, { color: theme.text, fontSize: scaled(12, theme) }]}

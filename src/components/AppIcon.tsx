@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
 import type { IconStyleId } from '@/lib/types';
 import { TOKENS, type Theme } from '@/lib/tokens';
 
@@ -14,6 +14,7 @@ export function AppIcon({
   size = 48,
   theme,
   showRing = false,
+  iconBase64,
 }: {
   name: string;
   tint?: string;
@@ -21,10 +22,23 @@ export function AppIcon({
   size?: number;
   theme: Theme;
   showRing?: boolean;
+  /** Real app icon (base64 PNG). Takes precedence over the generated tile. */
+  iconBase64?: string | null;
 }) {
   const glyph = useMemo(() => (name.trim().charAt(0) || '·').toUpperCase(), [name]);
   const r = Math.min(theme.radius, size / 3.2);
   const fontSize = size * 0.42;
+
+  // Real Android app icon — render the actual artwork.
+  if (iconBase64) {
+    return (
+      <Image
+        source={{ uri: `data:image/png;base64,${iconBase64}` }}
+        style={{ width: size, height: size, borderRadius: r }}
+        accessibilityLabel={`${name} icon`}
+      />
+    );
+  }
 
   const body = (
     <View

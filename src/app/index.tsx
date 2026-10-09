@@ -57,6 +57,14 @@ export default function Home() {
   const simulateLaunch = useCallback((app: AppItem) => {
     touchApp(app.id);
     buzz('light');
+    if (app.packageName) {
+      import('@/lib/launcher').then(({ launchApp }) =>
+        launchApp(app.packageName!).catch(() =>
+          say(`${displayName(app)} couldn't be opened. It may have been uninstalled.`),
+        ),
+      );
+      return;
+    }
     say(`${displayName(app)} would open here. Preview only — Android system access is required for the real action.`);
   }, [touchApp, buzz, say]);
 
