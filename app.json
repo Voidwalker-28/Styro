@@ -2,7 +2,7 @@
   "expo": {
     "name": "styro",
     "slug": "styro",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "orientation": "default",
     "icon": "./assets/images/icon.png",
     "scheme": "styro",
@@ -19,7 +19,7 @@
       },
       "predictiveBackGestureEnabled": false,
       "package": "com.anonymous.styro",
-      "versionCode": 2
+      "versionCode": 3
     },
     "web": {
       "output": "static",
@@ -35,7 +35,8 @@
           "imageWidth": 76
         }
       ],
-      "./plugins/with-styro-launcher.js"
+      "./plugins/with-styro-launcher.js",
+      "./plugins/with-styro-launcher-native.js"
     ],
     "experiments": {
       "typedRoutes": true,
