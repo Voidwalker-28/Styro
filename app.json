@@ -17,7 +17,8 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.anonymous.styro"
     },
     "web": {
       "output": "static",
@@ -38,6 +39,6 @@
       "typedRoutes": true,
       "reactCompiler": true
     },
-    "description": "Styro \u2014 your phone, arranged around you. A free, calm, futuristic launcher experience."
+    "description": "Styro — your phone, arranged around you. A free, calm, futuristic launcher experience."
   }
 }
