@@ -1,5 +1,9 @@
 # Styro
 
+<p align="center">
+  <img src="docs/images/styro-logo.jpg" alt="Styro logo" width="420">
+</p>
+
 > Your phone, arranged around you.
 
 [![Release](https://img.shields.io/github/v/release/Voidwalker-28/Styro?style=flat-square)](https://github.com/Voidwalker-28/Styro/releases/latest)
