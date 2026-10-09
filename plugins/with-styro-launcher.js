@@ -80,8 +80,7 @@ function removeUnusedPermissions(manifest) {
 const withStyroLauncher = (config) =>
   withAndroidManifest(config, (config) => {
     const manifest = config.modResults;
-    const app = AndroidConfig.Manifest.getMainApplicationOrThrow(manifest);
-    const mainActivity = AndroidConfig.Manifest.getMainActivityOrThrow(app);
+    const mainActivity = AndroidConfig.Manifest.getMainActivityOrThrow(manifest);
 
     ensureHomeIntentFilter(mainActivity);
     ensureLauncherQueries(manifest);
